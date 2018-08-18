@@ -1,5 +1,5 @@
-# Markov-Chain-For-Sentence-Generation
-Made this for the project http://colbertai.com and for twitter handle https://twitter.com/deepcolbert.
+# Colbert AI
+Made using Markov Chain to generate sentences for the project Colbert AI (http://colbertai.com) and for twitter handle https://twitter.com/deepcolbert.
 
 The code for this project is based around Jsvine's Markovify code.
 

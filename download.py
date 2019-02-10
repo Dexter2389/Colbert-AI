@@ -20,3 +20,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import youtube_dl
+
+PLAYLIST_URL = 'https://www.youtube.com/playlist?list=PLiZxWe0ejyv8CSMylrxb6Nx4Ii2RHbu_j'
+
+DATA_DIR = "data/"
+opts = {
+
+    # Don't download video
+    'skip_download': True,
+
+    # Subtitle Options
+    'writesubtitles': True,
+    'subtitlelangs': 'en',
+    'subtitleformat': 'vtt',
+
+    # File Options
+    'restrictfilenames': True,
+
+    # Misc. Options
+    'playlistrandom': True,
+    'ignoreerrors': True,
+}
+
+
+def main():
+    with youtube_dl.YoutubeDL(opts) as ydl:
+        ydl.download([PLAYLIST_URL])
+
+
+if __name__ == '__main__':
+    main()

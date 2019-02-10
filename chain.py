@@ -6,10 +6,7 @@ import json
 from unidecode import unidecode
 from splitters import split_into_sentences
 
-try:  # pragma: no cover
-    basestring
-except NameError:  # pragma: no cover
-    basestring = str
+basestring = str
 
 BEGIN = "__BEGIN__"
 END = "__END__"

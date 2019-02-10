@@ -40,7 +40,7 @@ opts = {
     # File Options
     'restrictfilenames': True,
     'nooverwrites': True,
-    'outtmpl': os.path.join(DATA_DIR, "%(playlist_index)s.%(ext)s"),
+    'outtmpl': os.path.join(DATA_DIR, "captions", "%(playlist_index)s.%(ext)s"),
 
     # Misc. Options
     'playlistrandom': True,

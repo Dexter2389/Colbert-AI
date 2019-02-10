@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import youtube_dl
+import os.path
 
 PLAYLIST_URL = 'https://www.youtube.com/playlist?list=PLiZxWe0ejyv8CSMylrxb6Nx4Ii2RHbu_j'
 
@@ -29,6 +30,7 @@ opts = {
 
     # Don't download video
     'skip_download': True,
+    'downloadarchive': os.path.join(DATA_DIR, "archive"),
 
     # Subtitle Options
     'writesubtitles': True,
@@ -37,10 +39,14 @@ opts = {
 
     # File Options
     'restrictfilenames': True,
+    'nooverwrites': True,
+    'outtmpl': os.path.join(DATA_DIR, "%(playlist_index)s.%(ext)s"),
 
     # Misc. Options
     'playlistrandom': True,
     'ignoreerrors': True,
+    'quiet': True,
+    'forcefilename': True,
 }
 
 

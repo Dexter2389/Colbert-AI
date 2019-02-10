@@ -29,7 +29,8 @@ class MarkovChain(object):
 
     def __init__(self, corpus, state_size):
         """
-        corpus: It is a list of lists where the outer list like a sentence and the inner list is contains the words that make the sentence.
+        corpus: It is a list of lists where the outer list like a sentence and the inner list is
+        contains the words that make the sentence.
 
         state_size: items used to represent the state of the model.
         """
@@ -39,15 +40,17 @@ class MarkovChain(object):
 
     def build(self, corpus, state_size):
         """
-        Returns a dict of dicts where the keys of the outer dict represent all possible states, and point to the inner dicts. The inner dicts represent all possibilities for the "next" item in the chain, along with the count of times it appears.
+        Returns a dict of dicts where the keys of the outer dict represent all possible states, and
+        point to the inner dicts. The inner dicts represent all possibilities for the "next" item in
+         the chain, along with the count of times it appears.
         """
         model = {}
 
         for run in corpus:
             items = ([BEGIN] * state_size) + run + [END]
-            for i in range(len(run)+1):
-                state = tuple(items[i:i+state_size])
-                follow = items[i+state_size]
+            for i in range(len(run) + 1):
+                state = tuple(items[i:i + state_size])
+                follow = items[i + state_size]
                 if state not in model:
                     model[state] = {}
 
@@ -70,7 +73,8 @@ class MarkovChain(object):
 
     def gen(self, init_state=None):
         """
-        Starting with a naive "BEGIN" state, RETURNS a generator that will yield successive items until the chain reaches the "END" state.
+        Starting with a naive "BEGIN" state, RETURNS a generator that will yield successive items
+        until the chain reaches the "END" state.
         """
         state = init_state or (BEGIN,) * self.state_size
         while True:
@@ -93,19 +97,19 @@ class MarkovChain(object):
         return json.dumps(list(self.model.items()))
 
 
-"""-------------------------------------------------------------------------------------------------------------------------------------------------------------------"""
-
 DEFAULT_MAX_OVERLAP_RATIO = 0.7
 DEFAULT_MAX_OVERLAP_TOTAL = 20
 DEFAULT_TRIES = 8
 
 
 class Text(object):
-    def __init__(self, input_text, state_size=2, chain=None, parsed_sentences=None, retain_original=True):
+    def __init__(self, input_text, state_size=2, chain=None, parsed_sentences=None,
+                 retain_original=True):
         """
         input_text: A string.
         state_size: An integer, indicating the number of words in the model's state.
-        parsed_sentences: It is a list of lists where the outer list like a sentence and the inner list is contains the words that make the sentence.
+        parsed_sentences: It is a list of lists where the outer list like a sentence and the inner
+        list is contains the words that make the sentence.
         """
 
         can_make_sentences = parsed_sentences is not None or input_text is not None
@@ -206,7 +210,10 @@ class Text(object):
 
     def text_sentences_output(self, words, max_overlap_ratio, max_overlap_total):
         """
-        Given a generated list of words, accept or reject it. This one rejects sentences that too closely match the original text, namely those that contain any identical sequence of words of X length, where X is the smaller number of (a) `max_overlap_ratio` (default: 0.7) of the total number of words, and (b) `max_overlap_total` (default: 15).
+        Given a generated list of words, accept or reject it. This one rejects sentences that too
+        closely match the original text, namely those that contain any identical sequence of words
+        of X length, where X is the smaller number of (a) `max_overlap_ratio` (default: 0.7) of the
+        total number of words, and (b) `max_overlap_total` (default: 15).
         """
         # Rejects chunk that is similar
 
@@ -215,7 +222,7 @@ class Text(object):
         overlap_over = overlap_max + 1
 
         gram_count = max((len(words) - overlap_max), 1)
-        grams = [words[i:i+overlap_over] for i in range(gram_count)]
+        grams = [words[i:i + overlap_over] for i in range(gram_count)]
 
         for gm in grams:
             gram_joined = self.word_join(gm)
@@ -226,15 +233,19 @@ class Text(object):
 
     def make_sentences(self, init_state=None, **kwargs):
         """
-        Attempts "tries" (default: 10) times to generate a valid sentence, based on the model and "test_sentences_output". Passes "max_overlap_ratio" and "max_overlap_total" to "test_sentences_output".
+        Attempts "tries" (default: 10) times to generate a valid sentence, based on the model and
+        "test_sentences_output". Passes "max_overlap_ratio" and "max_overlap_total" to
+        "test_sentences_output".
 
         If successful, returns the sentence as a string. If not, returns None.
 
-        If "init_state" (a tuple of "self.chain.state_size" words) is not specified, this method chooses a sentence-start at random, in accordance with the model.
+        If "init_state" (a tuple of "self.chain.state_size" words) is not specified, this method
+        chooses a sentence-start at random, in accordance with the model.
 
         If "test_output" is set as False then the "text_sentences_output" check will be skipped.
 
-        If "max_words" is specified, the word count for the sentence will be evaluated against the provided limit.
+        If "max_words" is specified, the word count for the sentence will be evaluated against the
+        provided limit.
         """
 
         tries = kwargs.get("tries", DEFAULT_TRIES)
@@ -243,7 +254,7 @@ class Text(object):
         test_output = kwargs.get("test_output", True)
         max_words = kwargs.get("max_words", None)
 
-        if init_state != None:
+        if init_state is not None:
             prefix = list(init_state)
             for word in prefix:
                 if word == BEGIN:
@@ -256,7 +267,7 @@ class Text(object):
 
         for _ in range(tries):
             words = prefix + self.chain.walk(init_state)
-            if max_words != None and len(words) > max_words:
+            if max_words is not None and len(words) > max_words:
                 continue
             if test_output and hasattr(self, "rejoined_text"):
                 if self.text_sentences_output(words, mor, mot):
@@ -269,14 +280,12 @@ class Text(object):
 
     def make_short_sentence(self, max_chars, min_chars=0, **kwargs):
         """
-        Tries making a sentence of no more than "max_chars" characters and optionally no less than "min_chars" charcaters, passing **kwargs to "self.make_sentence".
+        Tries making a sentence of no more than "max_chars" characters and optionally no less than
+        "min_chars" charcaters, passing **kwargs to "self.make_sentence".
         """
         tries = kwargs.get("tries", DEFAULT_TRIES)
 
         for _ in range(tries):
             sentence = self.make_sentences(**kwargs)
-            if sentence and len(sentence) <= max_chars and len(sentence) >= min_chars:
+            if sentence and max_chars >= len(sentence) >= min_chars:
                 return sentence
-
-
-"""-------------------------------------------------------------------------------------------------------------------------------------------------------------------"""

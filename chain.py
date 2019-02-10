@@ -6,8 +6,6 @@ import json
 from unidecode import unidecode
 from splitters import split_into_sentences
 
-basestring = str
-
 BEGIN = "__BEGIN__"
 END = "__END__"
 

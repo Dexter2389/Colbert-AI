@@ -43,7 +43,7 @@ opts = {
     'outtmpl': os.path.join(DATA_DIR, "captions", "%(playlist_index)s.%(ext)s"),
 
     # Misc. Options
-    'playlistrandom': True,
+    'playlistrandom': False,
     'ignoreerrors': True,
     'quiet': True,
     'forcefilename': True,

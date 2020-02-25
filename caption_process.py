@@ -36,7 +36,7 @@ def main():
     speaker = r"&gt;&gt; (Stephen|STEPHEN|stephen)*(Jon|JON|jon)*:?(.*)$"
     vtt = webvtt.WebVTT()
     vtt_files = glob.iglob(f"{DATA_DIR}/*.vtt")
-    txt_file = os.path.join(DATA_DIR, "captions.txt")
+    txt_file = os.path.join(DATA_DIR, "../", "captions.txt")
     with open(txt_file, "w+") as f:
         for vtt_file in vtt_files:
             stephen_speaking = True
@@ -47,7 +47,7 @@ def main():
                     continue
                 if speaker_stephen(text):
                     stephen_speaking = True
-                    text = "".join(x[1] for x in re.findall(r"&gt;&gt; (Stephen:|STEPHEN:|stephen:) (.*)$", text))
+                    text = "".join(x[1] for x in re.findall(r"&gt;&gt; (Stephen:|STEPHEN:|stephen:) (.*)$", text+<"|endoftext|">))
                     # print(text)
                 if not stephen_speaking:
                     continue
